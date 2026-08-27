@@ -16,3 +16,11 @@
 - [x] Document a final visual QA pass confirming the generated pizza-slice asset is present at desktop and mobile breakpoints.
 - [x] Add deterministic source-level verification for the dedicated pizza-slice asset and responsive breakpoints.
 - [x] Save a published checkpoint for the pizza-slice enhancement.
+- [x] Remove the older decorative hero animation and artificial 3D overlay elements.
+- [x] Build a clean, realistic pizza-slice opening with restrained dimensional motion.
+- [x] Recompose the landing page as a scroll-led story with minimal visual effects.
+- [x] Add or update Vitest coverage for the rebuilt landing experience.
+- [x] Verify the rebuilt landing page on desktop and mobile viewports.
+- [x] Remove unused legacy pizza-scene CSS and animation rules from the prior landing treatment.
+- [x] Add deterministic responsive assertions for the simplified slice-opening layout.
+- [ ] Save a published checkpoint for the rebuilt landing page.

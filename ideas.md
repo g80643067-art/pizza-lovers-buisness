@@ -94,3 +94,11 @@ The final slice treatment uses a dedicated photo-real pizza-slice image rather t
 On narrow screens, the pizza slice is scaled down and anchored from its top-right edge so it remains within the hero’s visible scene rather than dropping beneath the mobile action bar. This preserves the primary ordering controls and allows the slice to remain a visible depth cue.
 
 Final visual QA confirms the dedicated pizza-slice asset loads as a distinct secondary three-dimensional hero object at both desktop and mobile breakpoints. It remains separate from the full pizza, does not obscure the desktop navigation or order CTA, and remains visible above the fixed mobile action bar.
+
+## Realistic Slice Opening Rebuild
+
+Replace the prior “pizza theatre” treatment with a quieter opening built around one photo-real pizza slice. Remove the orbital tokens, annotation lines, synthetic steam, halo rings, card-like backing, and decorative grid. The only depth cues should be a natural cast shadow, subtle pointer-led tilt, and the physical edge visible in the food image. The page should move from the opening into the live menu through straightforward vertical scrolling, with simple editorial spacing rather than visual effects.
+
+Desktop and mobile visual checks confirm that the new opening presents one clearly recognisable photographic slice against an uncluttered dark field. The menu follows through a direct vertical scroll, the slice does not obstruct either the main ordering controls or mobile action bar, and the prior ornamental hero overlays are absent.
+
+After legacy scene cleanup, the final responsive review confirms the page opens on a single, photo-real slice with only natural shadow and subtle pointer tilt providing depth. The desktop composition retains whitespace around the slice and a direct scroll cue; the mobile composition keeps the full slice legible above the fixed contact and order controls.
