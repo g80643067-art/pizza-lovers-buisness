@@ -84,3 +84,13 @@ The updated treatment retains the Ember Atelier atmosphere while moving the foun
 The landing page was checked at desktop and mobile viewports after the colour refresh. The new depth grid, orbital rings, plate shadow, heat trails, and coral/saffron accents preserve the pizza as the dominant photographic object; responsive controls and the existing cart calls to action remain visible. The preview continues to report a Google Maps script load failure from the pre-existing map integration; the redesigned location section still retains its address and direction links.
 
 The map integration now degrades to a themed, static location state rather than leaving an empty panel or emitting a map-script error. Desktop and mobile checks confirm that the fallback shares the page’s dimensional grid treatment, retains the direction pathway beside it, and does not compromise the 3D hero composition or fixed mobile order controls.
+
+## Animated Pizza Slice Addition
+
+The hero now gains a second, clearly cut photographic pizza slice that floats alongside the full pizza. Its lifted base, shadow, eased motion, and pointer-led tilt give it a tangible three-dimensional presence while keeping the full pie as the dominant visual. The slice animation is removed for visitors who prefer reduced motion, and the composition scales down on small screens so the hero calls to action stay readable.
+
+The final slice treatment uses a dedicated photo-real pizza-slice image rather than a crop from the full pie. A narrow triangular depth layer remains below the slice to suggest crust thickness without obscuring its silhouette, preserving a clear, appetising secondary focal point on the hero’s right side.
+
+On narrow screens, the pizza slice is scaled down and anchored from its top-right edge so it remains within the hero’s visible scene rather than dropping beneath the mobile action bar. This preserves the primary ordering controls and allows the slice to remain a visible depth cue.
+
+Final visual QA confirms the dedicated pizza-slice asset loads as a distinct secondary three-dimensional hero object at both desktop and mobile breakpoints. It remains separate from the full pizza, does not obscure the desktop navigation or order CTA, and remains visible above the fixed mobile action bar.

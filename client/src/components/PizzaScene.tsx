@@ -6,6 +6,7 @@
 import { useState } from "react";
 
 const HERO_IMAGE = "/manus-storage/pizza-lovers-realistic-hero_ffb09d09.png";
+const SLICE_IMAGE = "/manus-storage/pizza-slice-3d-hero_f670c07d.png";
 
 export function PizzaScene() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -32,6 +33,19 @@ export function PizzaScene() {
       <div className="pizza-scene__orbit pizza-scene__orbit--one" aria-hidden="true"><span>Basil</span></div>
       <div className="pizza-scene__orbit pizza-scene__orbit--two" aria-hidden="true"><span>Cheese</span></div>
       <div className="pizza-scene__orbit pizza-scene__orbit--three" aria-hidden="true"><span>Oven 01</span></div>
+      <div className="pizza-scene__slice-orbit" aria-hidden="true">
+        <div className="pizza-scene__slice-float">
+          <div
+            className="pizza-scene__slice"
+            style={{ transform: `perspective(950px) rotateX(${tilt.y * -0.45 + 11}deg) rotateY(${tilt.x * 0.55 - 10}deg)` }}
+          >
+            <div className="pizza-scene__slice-shadow" />
+            <div className="pizza-scene__slice-base" />
+            <div className="pizza-scene__slice-photo"><img src={SLICE_IMAGE} alt="" /></div>
+          </div>
+          <div className="pizza-scene__slice-note"><span>02</span> first pull</div>
+        </div>
+      </div>
       <div
         className="pizza-scene__plate"
         style={{ transform: `perspective(1150px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) translate3d(${tilt.x * 0.7}px, ${tilt.y * -0.35}px, 0)` }}

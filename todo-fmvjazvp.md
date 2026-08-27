@@ -9,3 +9,10 @@
 - [x] Add a graceful location-map fallback when the Google Maps script cannot load.
 - [x] Re-verify the redesigned page at desktop and mobile breakpoints after map-failure handling.
 - [x] Save a published checkpoint for the completed redesign.
+- [x] Design and add an animated three-dimensional pizza-slice element to the landing-page hero.
+- [x] Ensure the pizza-slice animation respects reduced-motion preferences and small-screen composition.
+- [x] Add or update Vitest coverage for the pizza-slice enhancement.
+- [x] Verify the enhanced hero at desktop and mobile breakpoints.
+- [x] Document a final visual QA pass confirming the generated pizza-slice asset is present at desktop and mobile breakpoints.
+- [x] Add deterministic source-level verification for the dedicated pizza-slice asset and responsive breakpoints.
+- [ ] Save a published checkpoint for the pizza-slice enhancement.
