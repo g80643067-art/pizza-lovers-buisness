@@ -15,4 +15,4 @@
 - [x] Verify the enhanced hero at desktop and mobile breakpoints.
 - [x] Document a final visual QA pass confirming the generated pizza-slice asset is present at desktop and mobile breakpoints.
 - [x] Add deterministic source-level verification for the dedicated pizza-slice asset and responsive breakpoints.
-- [ ] Save a published checkpoint for the pizza-slice enhancement.
+- [x] Save a published checkpoint for the pizza-slice enhancement.
