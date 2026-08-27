@@ -73,3 +73,4 @@ Use a hand-cut circular **pizza-slice spark**: a small, asymmetrical ember-orang
 - The hero pizza is a premium, wood-fired food object first and a technical demo second: its surface must remain warmly lit, cheesy, dimensional, and craveable rather than toy-like.
 - The menu is a theatre-style tasting reel built around one dominant food visual, never a generic central card grid.
 - The stitched veg-only seal and **Tandoor Ember #F4511E** must recur as proof, action, dividers, and focal heat signals throughout the site.
+- The hero must use a **photo-real pizza composition**, staged with layered CSS perspective, light, shadow and restrained ingredient annotations; it must never revert to stylised 3D toppings or cartoon food forms.

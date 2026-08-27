@@ -21,7 +21,6 @@ import {
   Phone,
   Pizza,
   Plus,
-  Sparkles,
   Star,
   X,
 } from "lucide-react";
@@ -29,17 +28,18 @@ import {
 const WHATSAPP = "https://wa.me/919369722736?text=Hello%20The%20Pizza%20Lover%27s%2C%20I%20would%20like%20to%20order%20or%20see%20today%27s%20menu.";
 const DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=Takiya%20Mela%20Ground%2C%20Takiya%20Rd%2C%20Patan%2C%20Uttar%20Pradesh%20209867";
 const ADDRESS = "Takiya Mela Ground, Takiya Rd, Patan, Takiya, Uttar Pradesh 209867";
+const HERO_IMAGE = "/manus-storage/pizza-lovers-realistic-hero_ffb09d09.png";
 const MENU_IMAGE = "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=88";
 const SIGNATURE_IMAGE = "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1800&q=88";
-const PARTY_IMAGE = "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1800&q=88";
+const PARTY_IMAGE = "/manus-storage/pizza-lovers-birthday-table_0c82266e.png";
 const PizzaScene = lazy(() => import("@/components/PizzaScene").then((module) => ({ default: module.PizzaScene })));
 
 const menuCategories = [
-  { id: "pizza", label: "Pizza", icon: "🍕", note: "Veg-only pizzas, made fresh for your table." },
-  { id: "cheese", label: "Cheese Specials", icon: "🧀", note: "For the days when extra cheese is the whole plan." },
-  { id: "veg", label: "Veg Specials", icon: "🌱", note: "Fresh vegetarian favourites, made for big appetite." },
-  { id: "party", label: "Birthday / Party", icon: "🎉", note: "Pizza-ready celebrations for kids and their crew." },
-  { id: "eat", label: "All You Can Eat", icon: "🔥", note: "Ask us about the all-you-can-eat option." },
+  { id: "pizza", label: "Pizza", icon: "01", note: "Veg-only pizzas, made fresh for your table." },
+  { id: "cheese", label: "Cheese Specials", icon: "02", note: "For the days when extra cheese is the whole plan." },
+  { id: "veg", label: "Veg Specials", icon: "03", note: "Fresh vegetarian favourites, made for big appetite." },
+  { id: "party", label: "Birthday / Party", icon: "04", note: "Pizza-ready celebrations for kids and their crew." },
+  { id: "eat", label: "All You Can Eat", icon: "05", note: "Ask us about the all-you-can-eat option." },
 ];
 
 const reasons = [
@@ -52,7 +52,7 @@ const reasons = [
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <a href="#home" className="brand" aria-label="The Pizza Lover's home">
-      <img className="brand-mark" src="/manus-storage/pizza-lovers-mark_05b40109.png" alt="" />
+      <span className="brand-mark-wrap"><img className="brand-mark" src="/manus-storage/pizza-lovers-mark_05b40109.png" alt="" /></span>
       <span className="brand-copy">
         <b>The Pizza Lover&apos;s</b>
         {!compact && <small>Takiya Patan</small>}
@@ -94,11 +94,11 @@ export default function Home() {
 
       <main>
         <section className="hero" id="home">
-          <img className="hero-photo" src="/manus-storage/pizza-lovers-hero_0f182ab1.png" alt="" />
+          <img className="hero-photo" src={HERO_IMAGE} alt="" />
           <div className="container hero-grid">
             <div className="hero-copy">
-              <span className="eyebrow"><i /> Veg-only pizza at Takiya Mela Ground</span>
-              <h1 className="display hero-title">The Pizza<br />Lover&apos;s <em>Takiya Patan</em></h1>
+              <div className="hero-proof"><span className="eyebrow"><i /> Veg-only pizza at Takiya Mela Ground</span><span className="hero-veg-seal"><i /> 100% Veg only</span></div>
+              <h1 className="display hero-title">Pizza that<br /><em>pulls you closer.</em></h1>
               <p className="hero-kicker"><b>Fresh. Hot. Loaded with Love.</b><br />A better reason to stay for one more slice.</p>
               <div className="hero-actions">
                 <a className="button-primary" href={WHATSAPP} target="_blank" rel="noreferrer">Order on WhatsApp <ArrowUpRight size={15} /></a>
