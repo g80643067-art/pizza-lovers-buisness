@@ -23,4 +23,4 @@
 - [x] Verify the rebuilt landing page on desktop and mobile viewports.
 - [x] Remove unused legacy pizza-scene CSS and animation rules from the prior landing treatment.
 - [x] Add deterministic responsive assertions for the simplified slice-opening layout.
-- [ ] Save a published checkpoint for the rebuilt landing page.
+- [x] Save a published checkpoint for the rebuilt landing page.
