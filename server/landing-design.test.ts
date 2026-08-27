@@ -51,4 +51,14 @@ describe("realistic slice landing rebuild", () => {
     expect(map).toContain("map-fallback");
     expect(map).not.toContain('console.error("Failed to load Google Maps script")');
   });
+
+  it("does not hardcode customer ratings or review counts", async () => {
+    const home = await readFile(resolve(projectRoot, "client/src/pages/Home.tsx"), "utf8");
+
+    expect(home).not.toContain("4.3 / 5");
+    expect(home).not.toContain("58 Reviews");
+    expect(home).not.toContain("58 reviews");
+    expect(home).not.toContain("rating-chip");
+    expect(home).not.toContain("rating-hero");
+  });
 });

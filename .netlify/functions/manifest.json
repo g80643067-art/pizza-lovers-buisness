@@ -1,0 +1,1 @@
+{"functions":[{"bundler":"esbuild","buildData":{"runtimeAPIVersion":1},"mainFile":"/home/ubuntu/pizza-lovers-takiya/netlify/functions/api.ts","name":"api","priority":10,"path":"/home/ubuntu/pizza-lovers-takiya/.netlify/functions/api.zip","runtime":"js"}],"system":{"arch":"x64","platform":"linux"},"timestamp":1787850304825,"version":1}
