@@ -76,7 +76,7 @@
 
 /// <reference types="@types/google.maps" />
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePersistFn } from "@/hooks/usePersistFn";
 import { cn } from "@/lib/utils";
 
@@ -92,18 +92,21 @@ const FORGE_BASE_URL =
   "https://forge.butterfly-effect.dev";
 const MAPS_PROXY_URL = `${FORGE_BASE_URL}/v1/maps/proxy`;
 
-function loadMapScript() {
+function loadMapScript(): Promise<boolean> {
+  if (window.google?.maps) return Promise.resolve(true);
+
   return new Promise(resolve => {
     const script = document.createElement("script");
     script.src = `${MAPS_PROXY_URL}/maps/api/js?key=${API_KEY}&v=weekly&libraries=marker,places,geocoding,geometry`;
     script.async = true;
     script.crossOrigin = "anonymous";
     script.onload = () => {
-      resolve(null);
+      resolve(Boolean(window.google?.maps));
       script.remove(); // Clean up immediately
     };
     script.onerror = () => {
-      console.error("Failed to load Google Maps script");
+      resolve(false);
+      script.remove();
     };
     document.head.appendChild(script);
   });
@@ -124,11 +127,16 @@ export function MapView({
 }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map | null>(null);
+  const [isUnavailable, setIsUnavailable] = useState(false);
 
   const init = usePersistFn(async () => {
-    await loadMapScript();
+    const scriptLoaded = await loadMapScript();
     if (!mapContainer.current) {
       console.error("Map container not found");
+      return;
+    }
+    if (!scriptLoaded || !window.google?.maps) {
+      setIsUnavailable(true);
       return;
     }
     map.current = new window.google.maps.Map(mapContainer.current, {
@@ -148,6 +156,16 @@ export function MapView({
   useEffect(() => {
     init();
   }, [init]);
+
+  if (isUnavailable) {
+    return (
+      <div className={cn("map-fallback", className)} role="status">
+        <span className="map-fallback__grid" aria-hidden="true" />
+        <span className="map-fallback__pin" aria-hidden="true" />
+        <p>Map preview unavailable. Use the directions link to plan your visit.</p>
+      </div>
+    );
+  }
 
   return (
     <div ref={mapContainer} className={cn("w-full h-[500px]", className)} />

@@ -74,3 +74,13 @@ Use a hand-cut circular **pizza-slice spark**: a small, asymmetrical ember-orang
 - The menu is a theatre-style tasting reel built around one dominant food visual, never a generic central card grid.
 - The stitched veg-only seal and **Tandoor Ember #F4511E** must recur as proof, action, dividers, and focal heat signals throughout the site.
 - The hero must use a **photo-real pizza composition**, staged with layered CSS perspective, light, shadow and restrained ingredient annotations; it must never revert to stylised 3D toppings or cartoon food forms.
+
+## August 2026 Colour Refresh
+
+The updated treatment retains the Ember Atelier atmosphere while moving the foundation from charcoal brown to **midnight plum (#170F1C)**. A confident **tomato coral (#FF5A47)** carries action and heat, while **saffron glow (#F8BA52)** replaces the previous gold for highlights, orbit details, and warmth. **Oat cream (#FFF0D7)** keeps the editorial typography soft, and **basil green (#83B761)** remains a sparing food-led counterpoint. The resulting palette should feel more dimensional and contemporary, with deep violet shadows making the pizza’s orange, red, and green toppings appear to lift toward the viewer.
+
+## Implementation Validation
+
+The landing page was checked at desktop and mobile viewports after the colour refresh. The new depth grid, orbital rings, plate shadow, heat trails, and coral/saffron accents preserve the pizza as the dominant photographic object; responsive controls and the existing cart calls to action remain visible. The preview continues to report a Google Maps script load failure from the pre-existing map integration; the redesigned location section still retains its address and direction links.
+
+The map integration now degrades to a themed, static location state rather than leaving an empty panel or emitting a map-script error. Desktop and mobile checks confirm that the fallback shares the page’s dimensional grid treatment, retains the direction pathway beside it, and does not compromise the 3D hero composition or fixed mobile order controls.
