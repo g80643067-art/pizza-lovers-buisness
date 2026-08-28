@@ -12,3 +12,5 @@
 - [x] Handle the missing exact-food-image assets safely by retaining clearly labeled placeholders until the restaurant’s menu or exact food photos are supplied; do not substitute unrelated food photography.
 - [x] Correct the second delivery phone number in the footer to match the pasted specification: 7007800532.
 - [x] Add visible menu-card messaging explaining that exact food photos are pending until restaurant assets are supplied.
+- [x] Add vertical spacing and scrollbar-safe overflow around menu category navigation so ordering controls remain unobscured.
+- [x] Verify the spacing at desktop and mobile widths and save a checkpoint.

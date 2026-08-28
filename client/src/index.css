@@ -387,3 +387,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .cart-line__image--menu { display: grid; place-items: center; color: #f8ba52; background: #2b1724; }
 @media (max-width: 580px) { .menu-category-nav { padding-top: 2rem; } .menu-card__image { height: 145px; } .booking-options { gap: .35rem; } }
 .menu-card__image small { color: #f5c8a0; font-size: .5rem; font-weight: 800; letter-spacing: .08em; text-align: center; text-transform: uppercase; }
+
+/* Keep menu scrolling controls clear of the order actions below them. */
+.menu-category-nav { margin-bottom: 2.25rem; padding-bottom: 2.35rem; }
+.storefront-grid { margin-top: 0; padding-bottom: 2.2rem; }
+.storefront-grid::-webkit-scrollbar { height: 6px; }
+.storefront-grid::-webkit-scrollbar-track { background: rgb(44 24 32 / 10%); border-radius: 999px; }
+.storefront-grid::-webkit-scrollbar-thumb { background: rgb(211 70 57 / 58%); border-radius: 999px; }
+@media (max-width: 580px) {
+  .menu-category-nav { margin-bottom: 1.65rem; padding-bottom: 1.6rem; }
+  .storefront-grid { margin-top: 0; padding-bottom: 3.1rem; }
+}
