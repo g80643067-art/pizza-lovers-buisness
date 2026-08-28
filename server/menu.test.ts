@@ -21,6 +21,14 @@ describe("exact restaurant menu", () => {
     expect(home).not.toContain("7007805053");
   });
 
+  it("maps one unique image to every menu item", () => {
+    const imageUrls = MENU_ITEMS.map(item => item.image);
+
+    expect(imageUrls).toHaveLength(61);
+    expect(imageUrls.every(Boolean)).toBe(true);
+    expect(new Set(imageUrls).size).toBe(61);
+  });
+
   it("keeps duplicate item names distinct by category", () => {
     const paneerTikka = MENU_ITEMS.filter(item => item.name === "Paneer Tikka");
     expect(paneerTikka).toHaveLength(2);

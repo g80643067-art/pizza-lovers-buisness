@@ -398,3 +398,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .menu-category-nav { margin-bottom: 1.65rem; padding-bottom: 1.6rem; }
   .storefront-grid { margin-top: 0; padding-bottom: 3.1rem; }
 }
+
+.menu-card__image { position: relative; display: grid; min-height: 185px; place-items: end start; overflow: hidden; background: #2e1810; }
+.menu-card__image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .45s cubic-bezier(.23, 1, .32, 1); }
+.menu-card:hover .menu-card__image img { transform: scale(1.06); }
+.menu-card__image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgb(25 12 8 / 62%), transparent 58%); pointer-events: none; }
+.menu-card__image span { position: relative; z-index: 1; margin: 0 1rem .85rem; color: #ffe0b0; font-size: .52rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+@media (max-width: 580px) { .menu-card__image { min-height: 145px; } }

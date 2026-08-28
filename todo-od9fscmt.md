@@ -14,3 +14,7 @@
 - [x] Add visible menu-card messaging explaining that exact food photos are pending until restaurant assets are supplied.
 - [x] Add vertical spacing and scrollbar-safe overflow around menu category navigation so ordering controls remain unobscured.
 - [x] Verify the spacing at desktop and mobile widths and save a checkpoint.
+- [x] Audit all 61 menu items and define a unique image mapping for each exact dish.
+- [x] Generate unique, dish-specific premium food images with no reused assets.
+- [x] Upload and integrate one verified image per menu item and remove the placeholders.
+- [x] Validate image uniqueness, menu mapping, responsive cards, and save a checkpoint.
