@@ -60,7 +60,7 @@ function MenuCard({ menuItem }: { menuItem: MenuItem }) {
     <article className="shop-product menu-card">
       <div className="menu-card__image" aria-label={`Exact food image for ${menuItem.name} will be added from the restaurant menu assets`}>
         <Utensils size={22} aria-hidden="true" />
-        <span>{menuItem.category}</span>
+        <span>{menuItem.category}</span><small>Exact food photo pending</small>
       </div>
       <div className="shop-product__body">
         <div className="shop-product__meta"><span>Fresh from the counter</span><strong>{formatMoney(price, "INR")}</strong></div>
