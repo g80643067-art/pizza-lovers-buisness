@@ -370,3 +370,19 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 880px) { .hero--slice-opening { min-height: 780px; padding-top: 110px; }.hero--slice-opening .hero-grid { display: block; min-height: 645px; }.hero--slice-opening .hero-stage { position: absolute; inset: 24% -11% -5% 18%; min-height: 500px; }.slice-opening__image { width: min(64%, 360px); }.slice-opening figcaption { right: 18%; bottom: 8%; }.menu-body { grid-template-columns: 1fr; }.menu-art { width: min(82%, 740px); min-height: 385px; }.storefront-grid { width: 94%; margin: -3.8rem 0 0 auto; }.signature, .signature-inner { min-height: 620px; } }
 @media (max-width: 580px) { .hero--slice-opening { min-height: 760px; padding-top: 112px; }.hero--slice-opening .hero-grid { min-height: 600px; }.hero--slice-opening .hero-title { font-size: clamp(3.9rem, 20vw, 6rem); }.hero--slice-opening .hero-stage { inset: 38% -29% -12% 7%; min-height: 405px; }.slice-opening__light { width: 72%; transform: translate(8%, -9%); }.slice-opening__shadow { width: 42%; transform: translate(8%, 114px) rotate(-9deg); }.slice-opening__image { width: min(60%, 260px); max-height: 350px; }.slice-opening figcaption { right: 21%; bottom: 5%; font-size: .56rem; }.scroll-cue { display: none; }.opening-divider { gap: .6rem; min-height: 50px; padding: 0 .7rem; font-size: .48rem; }.opening-divider i { width: 4px; height: 4px; }.menu-section, .reasons, .trust-location { padding: 5.4rem 0; }.menu-body { margin-top: 2.3rem; }.menu-art { width: 84%; min-height: 300px; }.storefront-grid { display: flex; width: 100%; margin-top: -2.7rem; padding-right: 1rem; }.shop-product, .shop-product:nth-child(2) { flex: 0 0 min(265px, 78vw); margin-top: 0; }.signature, .signature-inner { min-height: 580px; }.signature-copy { padding-bottom: 6rem; }.party, .party-inner { min-height: 580px; } }
 @media (prefers-reduced-motion: reduce) { .slice-opening__image { transition: none; transform: none !important; } }
+
+/* Exact menu and WhatsApp order additions */
+.menu-category-nav { display: flex; gap: .5rem; padding: 3rem 0 1.7rem; overflow-x: auto; scrollbar-width: none; }
+.menu-category-nav::-webkit-scrollbar { display: none; }
+.menu-category-nav button { flex: 0 0 auto; border: 1px solid rgb(40 22 15 / 18%); border-radius: 999px; padding: .75rem 1rem; background: transparent; color: #513629; font-size: .68rem; font-weight: 800; letter-spacing: .06em; transition: .18s ease; }
+.menu-category-nav button:hover, .menu-category-nav button.is-active { border-color: #e34d24; background: #e34d24; color: #fff7e8; box-shadow: 0 9px 21px rgb(227 77 36 / 24%); }
+.menu-card__image { position: relative; display: grid; height: 185px; place-items: center; gap: .45rem; overflow: hidden; background: radial-gradient(circle at 50% 35%, #704034, #291620 72%); color: #ffd59d; }
+.menu-card__image svg { opacity: .85; }
+.menu-card__image span { color: #fff0d7; font-size: .58rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.menu-size-picker { display: flex; gap: .35rem; margin: 0 0 1rem; }
+.menu-size-picker button { min-width: 34px; border: 1px solid rgb(44 24 32 / 22%); padding: .35rem .5rem; background: transparent; color: #3b2225; font-size: .62rem; font-weight: 800; }
+.menu-size-picker button.is-selected, .menu-size-picker button:hover { border-color: #ff5a47; background: #ff5a47; color: #fff; }
+.booking-options { display: flex; flex-wrap: wrap; gap: .45rem; margin: 1rem 0 1.35rem; }
+.booking-options span { border: 1px solid rgb(255 240 215 / 28%); padding: .45rem .6rem; color: #ffe1ae; font-size: .58rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.cart-line__image--menu { display: grid; place-items: center; color: #f8ba52; background: #2b1724; }
+@media (max-width: 580px) { .menu-category-nav { padding-top: 2rem; } .menu-card__image { height: 145px; } .booking-options { gap: .35rem; } }

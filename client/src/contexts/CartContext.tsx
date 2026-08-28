@@ -1,5 +1,4 @@
-import { trpc } from "@/lib/trpc";
-import type { Cart } from "@shared/commerce/types";
+import type { MenuItem, MenuSize } from "@/data/menu";
 import {
   createContext,
   ReactNode,
@@ -10,196 +9,156 @@ import {
   useState,
 } from "react";
 
-/**
- * Storefront cart context.
- *
- * - Talks ONLY to backend-agnostic `commerce.*` tRPC procedures.
- * - Persists the cart id in localStorage and rehydrates on mount.
- * - Exposes a tiny imperative surface to UI: addItem, updateQuantity,
- *   removeItem, openCart, proceedToCheckout. Everything is typed against
- *   `shared/commerce/types` — the Shopify backend is invisible.
- */
+const CART_STORAGE_KEY = "pizza-lovers:menu-cart";
+const WHATSAPP_NUMBER = "919369722736";
 
-const CART_STORAGE_KEY = "commerce:cart-id";
+type CartLine = {
+  lineId: string;
+  itemId: string;
+  productTitle: string;
+  variantTitle: string;
+  quantity: number;
+  unitPrice: number;
+};
 
-function readStoredCartId(): string | null {
-  if (typeof window === "undefined") return null;
-  return window.localStorage.getItem(CART_STORAGE_KEY);
-}
-
-function writeStoredCartId(value: string | null) {
-  if (typeof window === "undefined") return;
-  if (value) window.localStorage.setItem(CART_STORAGE_KEY, value);
-  else window.localStorage.removeItem(CART_STORAGE_KEY);
-}
+type LocalCart = {
+  items: CartLine[];
+  itemCount: number;
+  total: number;
+};
 
 type CartContextValue = {
-  cart: Cart | null;
+  cart: LocalCart | null;
   isOpen: boolean;
   loading: boolean;
   itemCount: number;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (variantId: string, quantity?: number) => Promise<void>;
-  updateQuantity: (lineId: string, quantity: number) => Promise<void>;
-  removeItem: (lineId: string) => Promise<void>;
+  addItem: (item: MenuItem, size?: MenuSize) => void;
+  updateQuantity: (lineId: string, quantity: number) => void;
+  removeItem: (lineId: string) => void;
   clearCart: () => void;
   proceedToCheckout: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
 
+function readStoredCart(): LocalCart | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(CART_STORAGE_KEY) ?? "null") as LocalCart | null;
+    if (!parsed || !Array.isArray(parsed.items)) return null;
+    return makeCart(parsed.items);
+  } catch {
+    return null;
+  }
+}
+
+function makeCart(items: CartLine[]): LocalCart | null {
+  if (!items.length) return null;
+  return {
+    items,
+    itemCount: items.reduce((count, line) => count + line.quantity, 0),
+    total: items.reduce((total, line) => total + line.unitPrice * line.quantity, 0),
+  };
+}
+
+function writeStoredCart(cart: LocalCart | null) {
+  if (typeof window === "undefined") return;
+  if (cart) window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  else window.localStorage.removeItem(CART_STORAGE_KEY);
+}
+
+function formatWhatsAppMessage(cart: LocalCart) {
+  const lines = cart.items.map(line => {
+    const size = line.variantTitle === "M" ? "" : ` (${line.variantTitle})`;
+    return `• ${line.productTitle}${size} × ${line.quantity} — ₹${line.unitPrice * line.quantity}`;
+  });
+  return [
+    "Hello The Pizza Lover's, I want to place an order:",
+    "",
+    ...lines,
+    "",
+    `Total: ₹${cart.total}`,
+    "",
+    "Please confirm my order.",
+  ].join("\n");
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cartId, setCartId] = useState<string | null>(() => readStoredCartId());
-  const [cart, setCart] = useState<Cart | null>(null);
+  const [cart, setCart] = useState<LocalCart | null>(() => readStoredCart());
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const utils = trpc.useUtils();
-
-  // Re-hydrate cart on mount or whenever cartId changes.
   useEffect(() => {
-    if (!cartId) {
-      setCart(null);
-      return;
-    }
-    let cancelled = false;
-    setLoading(true);
-    utils.commerce.cart.get
-      .fetch({ cartId })
-      .then(c => {
-        if (cancelled) return;
-        if (c) setCart(c);
-        else {
-          // Stored cart id no longer valid — drop it.
-          writeStoredCartId(null);
-          setCartId(null);
-        }
-      })
-      .catch(() => {
-        if (cancelled) return;
-        writeStoredCartId(null);
-        setCartId(null);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [cartId, utils.commerce.cart.get]);
-
-  const itemCount = cart?.itemCount ?? 0;
+    writeStoredCart(cart);
+  }, [cart]);
 
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
 
-  const addItem = useCallback(
-    async (variantId: string, quantity: number = 1) => {
-      setLoading(true);
-      try {
-        if (!cartId || !cart) {
-          const created = await utils.client.commerce.cart.create.mutate({
-            lines: [{ variantId, quantity }],
-          });
-          setCart(created);
-          setCartId(created.id);
-          writeStoredCartId(created.id);
-        } else {
-          const updated = await utils.client.commerce.cart.addLines.mutate({
-            cartId,
-            lines: [{ variantId, quantity }],
-          });
-          setCart(updated);
-        }
-        setIsOpen(true);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [cart, cartId, utils.client]
-  );
+  const addItem = useCallback((item: MenuItem, size?: MenuSize) => {
+    const selectedSize = size ?? (Object.keys(item.prices)[0] as MenuSize);
+    const price = item.prices[selectedSize];
+    if (price === undefined) return;
+    const lineId = `${item.id}-${selectedSize}`;
 
-  const updateQuantity = useCallback(
-    async (lineId: string, quantity: number) => {
-      if (!cartId) return;
-      setLoading(true);
-      try {
-        const updated = await utils.client.commerce.cart.updateLines.mutate({
-          cartId,
-          lines: [{ lineId, quantity }],
-        });
-        if (updated) setCart(updated);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [cartId, utils.client]
-  );
-
-  const removeItem = useCallback(
-    async (lineId: string) => {
-      if (!cartId) return;
-      setLoading(true);
-      try {
-        const updated = await utils.client.commerce.cart.removeLines.mutate({
-          cartId,
-          lineIds: [lineId],
-        });
-        setCart(updated);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [cartId, utils.client]
-  );
-
-  const clearCart = useCallback(() => {
-    writeStoredCartId(null);
-    setCartId(null);
-    setCart(null);
+    setCart(current => {
+      const existing = current?.items.find(line => line.lineId === lineId);
+      const items = existing
+        ? current!.items.map(line => line.lineId === lineId ? { ...line, quantity: line.quantity + 1 } : line)
+        : [...(current?.items ?? []), {
+            lineId,
+            itemId: item.id,
+            productTitle: item.name,
+            variantTitle: selectedSize,
+            quantity: 1,
+            unitPrice: price,
+          }];
+      return makeCart(items);
+    });
+    setIsOpen(true);
   }, []);
 
+  const updateQuantity = useCallback((lineId: string, quantity: number) => {
+    setCart(current => {
+      if (!current) return null;
+      const items = current.items
+        .map(line => line.lineId === lineId ? { ...line, quantity } : line)
+        .filter(line => line.quantity > 0);
+      return makeCart(items);
+    });
+  }, []);
+
+  const removeItem = useCallback((lineId: string) => {
+    setCart(current => current ? makeCart(current.items.filter(line => line.lineId !== lineId)) : null);
+  }, []);
+
+  const clearCart = useCallback(() => setCart(null), []);
+
   const proceedToCheckout = useCallback(() => {
-    if (!cart?.checkoutUrl) return;
-    // checkoutUrl already has channel=online_store appended server-side.
-    window.open(cart.checkoutUrl, "_blank", "noopener,noreferrer");
+    if (!cart || typeof window === "undefined") return;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(formatWhatsAppMessage(cart))}`, "_blank", "noopener,noreferrer");
   }, [cart]);
 
-  const value = useMemo<CartContextValue>(
-    () => ({
-      cart,
-      isOpen,
-      loading,
-      itemCount,
-      openCart,
-      closeCart,
-      addItem,
-      updateQuantity,
-      removeItem,
-      clearCart,
-      proceedToCheckout,
-    }),
-    [
-      cart,
-      isOpen,
-      loading,
-      itemCount,
-      openCart,
-      closeCart,
-      addItem,
-      updateQuantity,
-      removeItem,
-      clearCart,
-      proceedToCheckout,
-    ]
-  );
+  const value = useMemo<CartContextValue>(() => ({
+    cart,
+    isOpen,
+    loading: false,
+    itemCount: cart?.itemCount ?? 0,
+    openCart,
+    closeCart,
+    addItem,
+    updateQuantity,
+    removeItem,
+    clearCart,
+    proceedToCheckout,
+  }), [cart, isOpen, openCart, closeCart, addItem, updateQuantity, removeItem, clearCart, proceedToCheckout]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used inside CartProvider");
-  return ctx;
+  const context = useContext(CartContext);
+  if (!context) throw new Error("useCart must be used inside CartProvider");
+  return context;
 }
