@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { MENU_CATEGORIES, MENU_ITEMS } from "../client/src/data/menu";
+import { filterMenuItems, getVisibleMenuItems, selectMenuCategory } from "../client/src/lib/menu-search";
 
 describe("exact restaurant menu", () => {
   it("contains every requested category and preserves representative prices", () => {
@@ -11,6 +12,43 @@ describe("exact restaurant menu", () => {
     expect(MENU_ITEMS.find(item => item.name === "The Pizza Lover's Special")?.prices).toEqual({ S: 175, M: 335, L: 465 });
     expect(MENU_ITEMS.find(item => item.name === "Medium Pizza + 2 Coke")?.prices).toEqual({ M: 209 });
     expect(MENU_ITEMS.find(item => item.name === "Chillie Stuffed Garlic Bread")?.prices).toEqual({ M: 120 });
+  });
+
+  it("searches item names and categories without being sensitive to case or spacing", () => {
+    expect(filterMenuItems(MENU_ITEMS, "  PIZZA LOVER'S  ").map(item => item.name)).toEqual(["The Pizza Lover's Special"]);
+    expect(filterMenuItems(MENU_ITEMS, "combo")).toHaveLength(6);
+    expect(filterMenuItems(MENU_ITEMS, "   ")).toBe(MENU_ITEMS);
+    expect(filterMenuItems(MENU_ITEMS, "not on this menu")).toEqual([]);
+  });
+
+  it("keeps search global and restores category-scoped results when search is cleared", () => {
+    const searchResults = getVisibleMenuItems(MENU_ITEMS, "Pizza — Basic", "combo");
+    const categoryResults = getVisibleMenuItems(MENU_ITEMS, "Pizza — Premium", "");
+
+    expect(searchResults).toHaveLength(6);
+    expect(searchResults.every(item => item.category.includes("Combo") || item.category === "Combo")).toBe(true);
+    expect(categoryResults).toHaveLength(8);
+    expect(categoryResults.every(item => item.category === "Pizza — Premium")).toBe(true);
+  });
+
+  it("models the search-to-category selection transition", () => {
+    let selection = { activeCategory: "Pizza — Basic", searchQuery: "combo" };
+
+    expect(getVisibleMenuItems(MENU_ITEMS, selection.activeCategory, selection.searchQuery)).toHaveLength(6);
+
+    selection = selectMenuCategory(selection, "Pizza — Premium");
+
+    expect(selection).toEqual({ activeCategory: "Pizza — Premium", searchQuery: "" });
+    expect(getVisibleMenuItems(MENU_ITEMS, selection.activeCategory, selection.searchQuery)).toHaveLength(8);
+  });
+
+  it("keeps category tabs consistent with full-menu search state", async () => {
+    const home = await readFile(resolve(import.meta.dirname, "../client/src/pages/Home.tsx"), "utf8");
+
+    expect(home).toContain('aria-selected={!searchQuery.trim() && activeCategory === category}');
+    expect(home).toContain('className={!searchQuery.trim() && activeCategory === category ? "is-active" : ""}');
+    expect(home).toContain('onClick={() => handleCategorySelect(category)}');
+    expect(home).toContain('selectMenuCategory({ activeCategory, searchQuery }, category)');
   });
 
   it("keeps the exact delivery numbers in the storefront contact actions", async () => {

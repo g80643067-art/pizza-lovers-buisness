@@ -7,6 +7,7 @@ import { MapView } from "@/components/Map";
 import { useCart } from "@/contexts/CartContext";
 import { MENU_CATEGORIES, MENU_ITEMS, BOOKING_OPTIONS, firstAvailableSize, type MenuItem, type MenuSize } from "@/data/menu";
 import { formatMoney } from "@/lib/format";
+import { getVisibleMenuItems, selectMenuCategory } from "@/lib/menu-search";
 import { lazy, Suspense, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
@@ -24,6 +25,7 @@ import {
   PartyPopper,
   Phone,
   Pizza,
+  Search,
   ShoppingBag,
   Utensils,
   X,
@@ -81,8 +83,17 @@ function MenuCard({ menuItem }: { menuItem: MenuItem }) {
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>(MENU_CATEGORIES[0]);
+  const [searchQuery, setSearchQuery] = useState("");
   const { itemCount, openCart } = useCart();
-  const visibleItems = useMemo(() => MENU_ITEMS.filter(item => item.category === activeCategory), [activeCategory]);
+  const visibleItems = useMemo(
+    () => getVisibleMenuItems(MENU_ITEMS, activeCategory, searchQuery),
+    [activeCategory, searchQuery],
+  );
+  const handleCategorySelect = (category: string) => {
+    const nextSelection = selectMenuCategory({ activeCategory, searchQuery }, category);
+    setActiveCategory(nextSelection.activeCategory);
+    setSearchQuery(nextSelection.searchQuery);
+  };
 
   return (
     <div className="site-shell">
@@ -93,7 +104,7 @@ export default function Home() {
 
         <div className="opening-divider" aria-hidden="true"><span>Veg-only pizza</span><i /><span>Fresh from the oven</span><i /><span>Takiya Patan</span></div>
 
-        <section className="menu-section" id="menu"><div className="container menu-layout"><div className="section-head"><span className="eyebrow"><i /> The exact menu</span><h2 className="display">Choose what feels good.</h2><p>Every item and price below follows the restaurant menu. Pizza sizes are shown where available; all other items are listed at their exact single price.</p></div><div className="menu-category-nav" role="tablist" aria-label="Menu categories">{MENU_CATEGORIES.map(category => <button key={category} type="button" role="tab" aria-selected={activeCategory === category} className={activeCategory === category ? "is-active" : ""} onClick={() => setActiveCategory(category)}>{category}</button>)}</div><div className="storefront-grid">{visibleItems.map(menuItem => <MenuCard key={menuItem.id} menuItem={menuItem} />)}</div><p className="menu-note"><b>Need a party menu?</b> Call 9369722736 or 7007800532 for anniversary, birthday, and kitty party bookings.</p></div></section>
+        <section className="menu-section" id="menu"><div className="container menu-layout"><div className="section-head"><span className="eyebrow"><i /> The exact menu</span><h2 className="display">Choose what feels good.</h2><p>Every item and price below follows the restaurant menu. Pizza sizes are shown where available; all other items are listed at their exact single price.</p></div><div className="menu-search-panel"><label className="menu-search" htmlFor="menu-search-input"><Search size={17} aria-hidden="true" /><span className="sr-only">Search menu</span><input id="menu-search-input" type="search" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="Search pizza, combo, or drink" aria-describedby="menu-search-hint" />{searchQuery && <button type="button" className="menu-search__clear" onClick={() => setSearchQuery("")} aria-label="Clear menu search"><X size={15} /></button>}</label><p className="menu-search-meta" id="menu-search-hint" aria-live="polite">{searchQuery.trim() ? `${visibleItems.length} ${visibleItems.length === 1 ? "item" : "items"} found for “${searchQuery.trim()}”` : "Search the full menu by item or category."}</p></div><div className="menu-category-nav" role="tablist" aria-label="Menu categories">{MENU_CATEGORIES.map(category => <button key={category} type="button" role="tab" aria-selected={!searchQuery.trim() && activeCategory === category} className={!searchQuery.trim() && activeCategory === category ? "is-active" : ""} onClick={() => handleCategorySelect(category)}>{category}</button>)}</div><div className="storefront-grid">{visibleItems.length > 0 ? visibleItems.map(menuItem => <MenuCard key={menuItem.id} menuItem={menuItem} />) : <div className="menu-empty-state" role="status"><h3>No menu items found</h3><p>Try a different pizza, combo, or category name.</p><button type="button" className="button-quiet menu-empty-state__clear" onClick={() => setSearchQuery("")}>Clear search</button></div>}</div><p className="menu-note"><b>Need a party menu?</b> Call 9369722736 or 7007800532 for anniversary, birthday, and kitty party bookings.</p></div></section>
 
         <section className="signature" id="story"><img className="signature-photo" src={SIGNATURE_IMAGE} alt="A freshly baked vegetarian pizza with melted cheese" /><div className="container signature-inner"><div className="signature-copy"><span className="eyebrow"><i /> The house mood</span><h2 className="display">Made for pizza lovers.</h2><p>Fresh ingredients. Loaded toppings. Perfectly baked. The whole idea is simple: make room for a hotter, happier slice.</p><a className="button-primary" href="#menu">Choose from the menu <ArrowUpRight size={15} /></a></div></div></section>
 
