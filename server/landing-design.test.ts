@@ -61,4 +61,33 @@ describe("realistic slice landing rebuild", () => {
     expect(home).not.toContain("rating-chip");
     expect(home).not.toContain("rating-hero");
   });
+
+  it("keeps the primary navigation and cart/order triggers wired after the header logo swap", async () => {
+    const home = await readFile(resolve(projectRoot, "client/src/pages/Home.tsx"), "utf8");
+
+    expect(home).toContain('<a href="#menu">Menu</a>');
+    expect(home).toContain('<a href="#story">Our Story</a>');
+    expect(home).toContain('<a href="#location">Location</a>');
+    expect(home).toContain('className="nav-order" onClick={openCart}');
+    expect(home).toContain('className="cart-order" onClick={openCart}');
+    expect(home).toContain("<CartDrawer />");
+  });
+
+  it("uses the requested self-contained SVG pizza logo in the shared brand mark", async () => {
+    const home = await readFile(resolve(projectRoot, "client/src/pages/Home.tsx"), "utf8");
+    const logo = await readFile(resolve(projectRoot, "client/src/components/PizzaLogo.tsx"), "utf8");
+
+    expect(home).toContain('import { PizzaLogo } from "@/components/PizzaLogo";');
+    expect(home).toContain('<Brand useCustomLogo />');
+    expect(home).toContain('<PizzaLogo className="brand-mark" />');
+    expect(home).toContain('brand-mark brand-mark--legacy');
+    expect(logo).toContain('viewBox="0 0 360 360"');
+    expect(logo).toContain("BEST IN TOWN");
+    expect(logo).toContain("DELIVERY");
+    expect(logo).toContain("The Pizza Lover&apos;s");
+    expect(logo).toContain("Eat with Love");
+    expect(logo).not.toContain("<image");
+    expect(logo).not.toContain("http://");
+    expect(logo).not.toContain("https://");
+  });
 });

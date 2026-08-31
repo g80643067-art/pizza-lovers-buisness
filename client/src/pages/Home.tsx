@@ -3,6 +3,7 @@
  * A black, ivory, and metallic-gold Italian pizzeria with a straightforward, exact menu.
  */
 import { CartDrawer } from "@/components/CartDrawer";
+import { PizzaLogo } from "@/components/PizzaLogo";
 import { MapView } from "@/components/Map";
 import { useCart } from "@/contexts/CartContext";
 import { MENU_CATEGORIES, MENU_ITEMS, BOOKING_OPTIONS, firstAvailableSize, type MenuItem, type MenuSize } from "@/data/menu";
@@ -56,10 +57,10 @@ function getMenuDescription(menuItem: MenuItem) {
   return "A familiar vegetarian favourite, prepared fresh for the table.";
 }
 
-function Brand({ compact = false }: { compact?: boolean }) {
+function Brand({ compact = false, useCustomLogo = false }: { compact?: boolean; useCustomLogo?: boolean }) {
   return (
     <a href="#home" className="brand" aria-label="The Pizza Lover's home">
-      <span className="brand-mark-wrap"><img className="brand-mark" src="/manus-storage/pizza-lovers-mark_05b40109.png" alt="" /></span>
+      <span className={`brand-mark-wrap${useCustomLogo ? "" : " brand-mark-wrap--legacy"}`}>{useCustomLogo ? <PizzaLogo className="brand-mark" /> : <img className="brand-mark brand-mark--legacy" src="/manus-storage/pizza-lovers-mark_05b40109.png" alt="" />}</span>
       <span className="brand-copy"><b>The Pizza Lover&apos;s</b>{!compact && <small>Takiya Patan</small>}</span>
     </a>
   );
@@ -107,7 +108,7 @@ export default function Home() {
 
   return (
     <div className="site-shell">
-      <header className="nav"><div className="container nav-inner"><Brand /><nav className="nav-links" aria-label="Primary navigation"><a href="#menu">Menu</a><a href="#story">Our Story</a><a href="#location">Location</a></nav><button type="button" className="nav-order" onClick={openCart}><ShoppingBag size={14} /> Your order{itemCount ? ` (${itemCount})` : ""}</button><button className="mobile-menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>{menuOpen ? <X size={20} /> : <MenuIcon size={22} />}</button></div>{menuOpen && <div className="absolute left-0 right-0 top-[68px] border-b border-[#d4af37]/20 bg-[#080808]/98 px-5 py-5 shadow-2xl backdrop-blur-xl md:hidden"><nav className="grid gap-4" aria-label="Mobile navigation">{["Menu", "Our Story", "Location"].map(link => <a className="text-sm font-bold uppercase tracking-[.14em] text-[#fff8e7]" onClick={() => setMenuOpen(false)} href={`#${link === "Our Story" ? "story" : link.toLowerCase()}`} key={link}>{link}</a>)}<button type="button" className="button-primary mobile-menu-purchase mt-2 w-fit" onClick={() => { setMenuOpen(false); openCart(); }}>View your order <ShoppingBag size={15} /></button></nav></div>}</header>
+      <header className="nav"><div className="container nav-inner"><Brand useCustomLogo /><nav className="nav-links" aria-label="Primary navigation"><a href="#menu">Menu</a><a href="#story">Our Story</a><a href="#location">Location</a></nav><button type="button" className="nav-order" onClick={openCart}><ShoppingBag size={14} /> Your order{itemCount ? ` (${itemCount})` : ""}</button><button className="mobile-menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>{menuOpen ? <X size={20} /> : <MenuIcon size={22} />}</button></div>{menuOpen && <div className="absolute left-0 right-0 top-[68px] border-b border-[#d4af37]/20 bg-[#080808]/98 px-5 py-5 shadow-2xl backdrop-blur-xl md:hidden"><nav className="grid gap-4" aria-label="Mobile navigation">{["Menu", "Our Story", "Location"].map(link => <a className="text-sm font-bold uppercase tracking-[.14em] text-[#fff8e7]" onClick={() => setMenuOpen(false)} href={`#${link === "Our Story" ? "story" : link.toLowerCase()}`} key={link}>{link}</a>)}<button type="button" className="button-primary mobile-menu-purchase mt-2 w-fit" onClick={() => { setMenuOpen(false); openCart(); }}>View your order <ShoppingBag size={15} /></button></nav></div>}</header>
 
       <main>
         <section className="hero hero--slice-opening" id="home"><div className="container hero-grid"><div className="hero-copy"><div className="hero-proof"><span className="eyebrow"><i /> A refined veg-only pizzeria in Takiya Patan</span><span className="hero-veg-seal"><i /> 100% Veg only</span></div><h1 className="display hero-title">One good slice.<br /><em>That&apos;s the point.</em></h1><p className="hero-kicker"><b>Made with intention.</b><br />Choose your exact item from the menu, add it to your order, and send the details straight to WhatsApp.</p><div className="hero-actions"><a className="button-primary" href="#menu">Order now <ArrowUpRight size={15} /></a><button type="button" className="button-quiet" onClick={openCart}>Your order <ShoppingBag size={15} /></button></div><div className="hero-meta"><div className="hero-status"><b>Open until 10 PM</b>Vegetarian restaurant &amp; pizzeria</div></div></div><div className="hero-stage"><Suspense fallback={null}><PizzaScene /></Suspense></div></div><a className="scroll-cue" href="#menu"><span aria-hidden="true" /> Scroll for the menu</a></section>

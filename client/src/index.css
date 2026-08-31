@@ -55,9 +55,11 @@ button { font-family: inherit; cursor: pointer; }
 .nav::after { content: ""; position: absolute; inset: 0; z-index: -1; border-bottom: 1px solid rgb(212 175 55 / 16%); background: linear-gradient(180deg, rgb(8 8 8 / 94%), rgb(8 8 8 / 76%) 72%, transparent); backdrop-filter: blur(12px); }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; }
 .brand { display: inline-flex; align-items: center; gap: .8rem; color: var(--ivory); text-decoration: none; }
-.brand-mark-wrap { position: relative; display: grid; width: 52px; height: 52px; place-items: center; overflow: hidden; border: 1px solid rgb(212 175 55 / 60%); border-radius: 50%; background: radial-gradient(circle at 40% 30%, rgb(242 200 102 / 22%), transparent 56%), var(--card); box-shadow: 0 8px 28px rgb(0 0 0 / 35%), inset 0 0 0 1px rgb(255 248 231 / 5%); }
-.brand-mark-wrap::after { content: ""; position: absolute; inset: 6px; border: 1px solid rgb(242 200 102 / 26%); border-radius: 50%; }
-.brand-mark { position: relative; z-index: 1; width: 37px; height: 37px; object-fit: contain; filter: sepia(1) saturate(2.3) hue-rotate(354deg) brightness(1.05); }
+.brand-mark-wrap { position: relative; display: grid; width: 68px; height: 68px; flex: 0 0 auto; place-items: center; }
+.brand-mark { display: block; width: 68px; height: 68px; overflow: visible; }
+.brand-mark-wrap--legacy { position: relative; display: grid; width: 52px; height: 52px; flex: 0 0 auto; place-items: center; overflow: hidden; border: 1px solid rgb(212 175 55 / 60%); border-radius: 50%; background: radial-gradient(circle at 40% 30%, rgb(242 200 102 / 22%), transparent 56%), var(--card); box-shadow: 0 8px 28px rgb(0 0 0 / 35%), inset 0 0 0 1px rgb(255 248 231 / 5%); }
+.brand-mark-wrap--legacy::after { content: ""; position: absolute; inset: 6px; border: 1px solid rgb(242 200 102 / 26%); border-radius: 50%; }
+.brand-mark--legacy { position: relative; z-index: 1; width: 37px; height: 37px; object-fit: contain; filter: sepia(1) saturate(2.3) hue-rotate(354deg) brightness(1.05); }
 .brand-copy { display: grid; line-height: 1; }
 .brand-copy b { font-family: var(--font-display); font-size: 1.2rem; font-weight: 400; letter-spacing: -.05em; }
 .brand-copy small { margin-top: .28rem; color: var(--gold-bright); font-size: .5rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
@@ -269,8 +271,10 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 560px) {
   .container { width: min(100% - 1.4rem, 1240px); }
   .brand-copy b { font-size: 1.02rem; }
-  .brand-mark-wrap { width: 46px; height: 46px; }
-  .brand-mark { width: 32px; height: 32px; }
+  .brand-mark-wrap { width: 56px; height: 56px; }
+  .brand-mark { width: 56px; height: 56px; }
+  .brand-mark-wrap--legacy { width: 46px; height: 46px; }
+  .brand-mark--legacy { width: 32px; height: 32px; }
   .hero { min-height: 760px; padding-bottom: 56px; }
   .hero-grid { min-height: 600px; }
   .hero-title { margin-top: 1rem; font-size: clamp(4rem, 21vw, 6.5rem); }
