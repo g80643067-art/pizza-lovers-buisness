@@ -8,8 +8,8 @@ describe("realistic slice landing rebuild", () => {
   it("keeps the established colour tokens and accessible reduced-motion support", async () => {
     const styles = await readFile(resolve(projectRoot, "client/src/index.css"), "utf8");
 
-    expect(styles).toContain("--midnight-plum: #170f1c");
-    expect(styles).toContain("--tomato-coral: #ff5a47");
+    expect(styles).toContain("--ink: #080808");
+    expect(styles).toContain("--gold: #d4af37");
     expect(styles).toContain("@media (prefers-reduced-motion: reduce)");
     expect(styles).toContain(".slice-opening__image { transition: none; transform: none !important; }");
     expect(styles).toContain(".hero--slice-opening");
@@ -38,10 +38,10 @@ describe("realistic slice landing rebuild", () => {
   it("defines explicit desktop and mobile rules for the simplified slice opening", async () => {
     const styles = await readFile(resolve(projectRoot, "client/src/index.css"), "utf8");
 
-    expect(styles).toContain("@media (max-width: 880px) { .hero--slice-opening");
-    expect(styles).toContain(".hero--slice-opening .hero-stage { position: absolute");
-    expect(styles).toContain("@media (max-width: 580px) { .hero--slice-opening");
-    expect(styles).toContain(".slice-opening__image { width: min(60%, 260px)");
+    expect(styles).toContain("@media (max-width: 760px)");
+    expect(styles).toContain(".hero-stage { position: absolute");
+    expect(styles).toContain("@media (max-width: 560px)");
+    expect(styles).toContain("width: min(60%, 520px)");
   });
 
   it("keeps the location experience useful if the external map script is unavailable", async () => {
