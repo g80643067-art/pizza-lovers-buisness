@@ -1,7 +1,7 @@
 import type { MenuItem } from "@/data/menu";
 
 /**
- * Search menu names and categories while keeping whitespace and casing forgiving.
+ * Search menu names and both category labels while keeping whitespace and casing forgiving.
  */
 export function filterMenuItems(items: MenuItem[], query: string): MenuItem[] {
   const normalizedQuery = query.trim().toLocaleLowerCase();
@@ -9,14 +9,14 @@ export function filterMenuItems(items: MenuItem[], query: string): MenuItem[] {
   if (!normalizedQuery) return items;
 
   return items.filter((item) =>
-    `${item.name} ${item.category}`.toLocaleLowerCase().includes(normalizedQuery),
+    `${item.name} ${item.category} ${item.menuCategory} ${item.subcategory ?? ""}`.toLocaleLowerCase().includes(normalizedQuery),
   );
 }
 
 export function getVisibleMenuItems(items: MenuItem[], activeCategory: string, query: string): MenuItem[] {
   return query.trim()
     ? filterMenuItems(items, query)
-    : items.filter((item) => item.category === activeCategory);
+    : items.filter((item) => item.category === activeCategory || item.menuCategory === activeCategory);
 }
 
 export type MenuSelection = {
